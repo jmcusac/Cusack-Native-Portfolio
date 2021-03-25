@@ -22,7 +22,7 @@ struct TranslationService {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "translate.google.com"
-        components.path = ""
+        components.path = ""//api key
         components.setQueryItems(with: ["key": apiKey, "text": message.value, "lang": languageCode])
         return components.url!
     }

@@ -81,6 +81,11 @@ struct ContentView_Previews: PreviewProvider {
             
             ContentView()
                 .environmentObject(ChatViewModel())
+                .previewDevice("iPhone 12")
+                .previewDisplayName("iPhone 12")
+            
+            ContentView()
+                .environmentObject(ChatViewModel())
                 .previewDevice("iPhone SE")
                 .previewDisplayName("iPhone SE")
                 .environment(\.colorScheme, .dark)

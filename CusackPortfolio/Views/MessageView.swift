@@ -21,7 +21,7 @@ struct MessageView: View {
                 .onTapGesture {
                     if self.isTranslating,
                         self.message.isTranslated {
-                        let url = URL(string: "https://https://translate.google.com")!
+                        let url = URL(string: "https://translate.google.com")!
                         UIApplication.shared.open(url)
                     }
             }

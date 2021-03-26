@@ -26,18 +26,11 @@
     return synchronizer;
 }
 
-//not recommended
-- (NSMutableDictionary *) getDictionaryOnMainThread {
-    
-    NSMutableDictionary *returnDictionary = [(AppDelegate *) [UIApplication sharedApplication].delegate surveyDataDictionary];
-    
-    return returnDictionary;
-}
-
 - (id)init {
     self = [super init];
     
     if (self) {
+        //active working directories
         [self setDocumentDirectory];
         [self createTechAssistantFolder];
         
@@ -90,6 +83,7 @@
     return self;
 }
 
+//pull the excel file and format for output
 -(void) login:(NSNotification *)notification {
     AppDelegate *delegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
     
@@ -168,6 +162,7 @@
     self.totalCompletedUploads = nil;
 }
 
+//changes to jobs since last cloud interaction?
 - (void) updateJobsList:(NSNotification *)notification {
     BOXContentClient *contentClient = [BOXContentClient defaultClient];
     NSLog(@"Updating from Lists Folder");
@@ -209,6 +204,7 @@
     }];
 }
 
+//single file download for on demand need
 - (BOXFileDownloadRequest *)fileDownloadRequestWithID:(NSString *)fileID toLocalFilePath:(NSString *)localFilePath {
     BOXContentClient *contentClient = [BOXContentClient defaultClient];
     BOXFileDownloadRequest *request = [[BOXFileDownloadRequest alloc] initWithLocalDestination:localFilePath fileID:fileID];
@@ -231,6 +227,7 @@
     return fileNotEmpty;
 }
 
+//lets not use the documents folder, but our own
 - (void) createTechAssistantFolder {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents folder
@@ -240,6 +237,7 @@
         [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:nil];
 }
 
+//iOS 13 includes a built in Apple built "Files" app : great for emailing files
 - (NSString *) copyFileToDocumentDirectory : (NSString *) fileName {
     NSError *error;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
@@ -269,6 +267,26 @@
     return documentDirPath;
 }
 
+//make sure all text fits in cell regardless of screen size
++ (void) resizeFontForLabel:(UILabel*)aLabel {
+    // use font from provided label so we don't lose color, style, etc
+    UIFont *font = aLabel.font;
+    
+    // start with maxSize and keep reducing until it doesn't clip
+    for(int i = 18; i >= 4; i--) {
+        font = [font fontWithSize:i];
+        CGSize constraintSize = CGSizeMake(aLabel.frame.size.width, MAXFLOAT);
+        
+        // This step checks how tall the label would be with the desired font.
+        CGSize labelSize = [aLabel.text sizeWithFont:font constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
+        if(labelSize.height <= aLabel.frame.size.height)
+            break;
+    }
+    // Set the UILabel's font to the newly adjusted font.
+    aLabel.font = font;
+}
+
+//convert data to PDF
 - (void) generatePDFFile:(NSDictionary *)plistDict outputPath:(NSString *)filePath {
     NSMutableData *pdfData = [NSMutableData data];
     
@@ -286,24 +304,6 @@
     
     // Write PDF cover sheet to cloud
     [pdfData writeToFile:filePath atomically:YES];
-}
-
-+ (void) resizeFontForLabel:(UILabel*)aLabel {
-    // use font from provided label so we don't lose color, style, etc
-    UIFont *font = aLabel.font;
-    
-    // start with maxSize and keep reducing until it doesn't clip
-    for(int i = 18; i >= 4; i--) {
-        font = [font fontWithSize:i];
-        CGSize constraintSize = CGSizeMake(aLabel.frame.size.width, MAXFLOAT);
-        
-        // This step checks how tall the label would be with the desired font.
-        CGSize labelSize = [aLabel.text sizeWithFont:font constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
-        if(labelSize.height <= aLabel.frame.size.height)
-            break;
-    }
-    // Set the UILabel's font to the newly adjusted font.
-    aLabel.font = font;
 }
 
 - (void)drawCoverSheet0:(NSDictionary *)plistDict {
@@ -384,125 +384,7 @@
     [page0.layer renderInContext:UIGraphicsGetCurrentContext()];
 }
 
-- (void)drawCoverSheet1:(NSDictionary *)plistDict {
-    UIGraphicsBeginPDFPage();
-    
-    NSString *tempUse0 = [plistDict objectForKey:@"att1"];
-    NSString *tempUse1 = [plistDict objectForKey:@"att12"];
-    NSString *attCustomLocation = [NSString stringWithFormat:@"%@ : %@", tempUse0, tempUse1];
-    
-    //date
-    NSDate *dateInsert = [SelectJob loadJobStartTime];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"cccc, MMM dd, yyyy - hh:mm a z"];
-    NSString *dateInsertFinal = [formatter stringFromDate:dateInsert];
-    
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"TechAssistant" bundle: nil];
-    
-    UIView *page1 = [[mainStoryboard instantiateViewControllerWithIdentifier:@"attOutput1"] view];
-    
-    UILabel *ATTdate = (UILabel *)[page1 viewWithTag:99];
-    [ATTdate setText:dateInsertFinal];
-    
-    UILabel *ATT100 = (UILabel *)[page1 viewWithTag:100];
-    [ATT100 setText:[plistDict objectForKey:@"att0"]];
-    
-    UILabel *ATT101 = (UILabel *)[page1 viewWithTag:101];
-    [ATT101 setText:attCustomLocation];
-    
-    UILabel *ATT106 = (UILabel *)[page1 viewWithTag:106];
-    [ATT106 setText:[plistDict objectForKey:@"smallAddress"]];
-    
-    UILabel *ATT107 = (UILabel *)[page1 viewWithTag:107];
-    [ATT107 setText:[plistDict objectForKey:@"smallState"]];
-    
-    UILabel *ATT108 = (UILabel *)[page1 viewWithTag:108];
-    [ATT108 setText:[plistDict objectForKey:@"smallCity"]];
-    
-    UILabel *ATT109 = (UILabel *)[page1 viewWithTag:109];
-    [ATT109 setText:[plistDict objectForKey:@"smallZip"]];
-    
-    UILabel *ATT110 = (UILabel *)[page1 viewWithTag:110];
-    [ATT110 setText:[plistDict objectForKey:@"sowAttField10"]];
-    
-    UILabel *ATT111 = (UILabel *)[page1 viewWithTag:111];
-    [ATT111 setText:[plistDict objectForKey:@"sowAttField11"]];
-    
-    UILabel *ATT112 = (UILabel *)[page1 viewWithTag:112];
-    [ATT112 setText:[plistDict objectForKey:@"sowAttField12"]];
-    
-    UILabel *ATT113 = (UILabel *)[page1 viewWithTag:113];
-    [ATT113 setText:[plistDict objectForKey:@"sowAttField13"]];
-    
-    UILabel *ATT118 = (UILabel *)[page1 viewWithTag:118];
-    [ATT118 setText:[plistDict objectForKey:@"sowAttField19"]];
-    
-    UILabel *ATT119 = (UILabel *)[page1 viewWithTag:119];
-    [ATT119 setText:[plistDict objectForKey:@"sowAttField18"]];
-    
-    UILabel *ATT1000 = (UILabel *)[page1 viewWithTag:1000];
-    [ATT1000 setText:[plistDict objectForKey:@"sowAttField17"]];
-    
-    UILabel *ATT1001 = (UILabel *)[page1 viewWithTag:1001];
-    [ATT1001 setText:[plistDict objectForKey:@"sowAttView1"]];
-    [BoxSynchronizer resizeFontForLabel : ATT1001];
-    
-    UILabel *ATT200 = (UILabel *)[page1 viewWithTag:200];
-    [ATT200 setText:[plistDict objectForKey:@"sowAttView2"]];
-    [BoxSynchronizer resizeFontForLabel : ATT200];
-    
-    //TechAssistant Version
-    NSString *version = [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleVersionKey];
-    UILabel *TechAssistant = (UILabel *)[page1 viewWithTag:999];
-    [TechAssistant setText:[NSString stringWithFormat:@"PAGE 2 Generated by B2Innovation's TechAssistant Version: %@", version]];
-    
-    [page1 setNeedsDisplay];
-    [page1.layer renderInContext:UIGraphicsGetCurrentContext()];
-}
-
-- (void)drawCoverSheet2:(NSDictionary *)plistDict {
-    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    
-    UIGraphicsBeginPDFPage();
-    
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"TechAssistant" bundle: nil];
-    
-    UIView *page2 = [[mainStoryboard instantiateViewControllerWithIdentifier:@"bomOutput0"] view];
-    NSMutableString *bomString=[NSMutableString string];//NSMutableString *str = [NSMutableString string];
-    NSString *toAdd, *intSearch, *leftString, *rightString;
-    //Bill of Materials
-    
-    for (int i=0; i<delegate.bomList.count; i++) {
-        //unique = [NSString stringWithFormat:@"%d",mynumber];
-        intSearch = ([NSString stringWithFormat:@"%@", delegate.bomList[i] ]);
-        leftString=delegate.leftBomArray[i];
-        rightString=delegate.rightBomArray[i];
-        NSLog(@"intSearch found %@ at index %d", intSearch, i);
-        if([intSearch isEqual:@"0"]||intSearch==0) {
-            NSLog(@"Nothing to add to output at index: %d", i);
-        } else {
-            toAdd = ([NSString stringWithFormat:@"%@ ordered of item \"%@\" with description \"%@\" at the Client .XLSX file index: %d.\n\n", intSearch, leftString, rightString, (i+14)]);
-            bomString = [bomString stringByAppendingString:toAdd];
-        }
-    }
-    
-    NSLog(@"BoM String for Page 3: %@", bomString);
-    UITextView *ATT201 = (UITextView *)[page2 viewWithTag:201];
-    if(bomString==nil||bomString==NULL||[bomString isEqual:@""])
-        bomString=@"No Bill of Materials generated for this job by the user.\n \n \n ";
-    
-    [ATT201 setText:bomString];
-    [BoxSynchronizer resizeFontForLabel : ATT201];
-    
-    //TechAssistant Version
-    NSString *version = [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleVersionKey];
-    UILabel *TechAssistant = (UILabel *)[page2 viewWithTag:999];
-    [TechAssistant setText:[NSString stringWithFormat:@"PAGE 3 Generated by B2Innovation's TechAssistant Version: %@", version]];
-    
-    [page2 setNeedsDisplay];
-    [page2.layer renderInContext:UIGraphicsGetCurrentContext()];
-}
-
+//PDF the photo data
 - (void)drawPhotoPage:(NSDictionary *)plistDict {
     NSArray* tempMemoList = [(AppDelegate *) [UIApplication sharedApplication].delegate memoList];
     int fourCount, photoAdded=0, indexOfPhotoMemo=0, perPage=4, jpegFound;
@@ -652,6 +534,7 @@
     }
 }
 
+//ensure our XML JSON pull is being read correctly
 - (NSString *) convertXML : (NSString * ) myString {
     NSString * issue0 = @"</Data><NamedCell";
     NSString * issue1 = @"<Cell><Data ss:Type=\"String\">";
@@ -724,6 +607,7 @@
     return temp;
 }
 
+//ran after intro page cloud interactions
 - (void)parseUsersList: (NSNotification *)notification {
     NSString *usersPath = [self.documentsDirectory stringByAppendingPathComponent:[AppDelegate boxInputJobsFile]];
     self.searchLetter=@"A";
@@ -773,6 +657,7 @@
     //NSLog(@"FIELD ENGINEER DICTIONARY:\n%@", delegate.fieldEngineerDictionary);
 }
 
+//ran after consuming cloud API endpoint at init
 - (void)parseUserJobList: (NSNotification *)notification {
     NSString *inputFile = [AppDelegate boxInputJobsFile];
     NSString *jobsPath = [self.documentsDirectory stringByAppendingPathComponent: inputFile];
@@ -855,63 +740,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"com.cusoft.logInReady" object:nil];
 }
 
-- (void)incrementAscii {
-    if ([self.searchLetter isEqual: @"A"])
-        self.searchLetter=@"B";
-    else if ([self.searchLetter isEqual: @"B"])
-        self.searchLetter=@"C";
-    else if ([self.searchLetter isEqual: @"C"])
-        self.searchLetter=@"D";
-    else if ([self.searchLetter isEqual: @"D"])
-        self.searchLetter=@"E";
-    else if ([self.searchLetter isEqual: @"E"])
-        self.searchLetter=@"F";
-    else if ([self.searchLetter isEqual: @"F"])
-        self.searchLetter=@"G";
-    else if ([self.searchLetter isEqual: @"G"])
-        self.searchLetter=@"H";
-    else if ([self.searchLetter isEqual: @"H"])
-        self.searchLetter=@"I";
-    else if ([self.searchLetter isEqual: @"I"])
-        self.searchLetter=@"J";
-    else if ([self.searchLetter isEqual: @"J"])
-        self.searchLetter=@"K";
-    else if ([self.searchLetter isEqual: @"K"])
-        self.searchLetter=@"L";
-    else if ([self.searchLetter isEqual: @"L"])
-        self.searchLetter=@"M";
-    else if ([self.searchLetter isEqual: @"M"])
-        self.searchLetter=@"N";
-    else if ([self.searchLetter isEqual: @"N"])
-        self.searchLetter=@"O";
-    else if ([self.searchLetter isEqual: @"O"])
-        self.searchLetter=@"P";
-    else if ([self.searchLetter isEqual: @"P"])
-        self.searchLetter=@"Q";
-    else if ([self.searchLetter isEqual: @"Q"])
-        self.searchLetter=@"R";
-    else if ([self.searchLetter isEqual: @"R"])
-        self.searchLetter=@"S";
-    else if ([self.searchLetter isEqual: @"S"])
-        self.searchLetter=@"T";
-    else if ([self.searchLetter isEqual: @"T"])
-        self.searchLetter=@"U";
-    else if ([self.searchLetter isEqual: @"U"])
-        self.searchLetter=@"V";
-    else if ([self.searchLetter isEqual: @"V"])
-        self.searchLetter=@"W";
-    else if ([self.searchLetter isEqual: @"W"])
-        self.searchLetter=@"X";
-    else if ([self.searchLetter isEqual: @"X"])
-        self.searchLetter=@"Y";
-    else if ([self.searchLetter isEqual: @"Y"])
-        self.searchLetter=@"Z";
-    else if ([self.searchLetter isEqual: @"Z"])
-        self.searchLetter=@"A";
-    else
-        self.searchLetter=@"ERROR";
-}
-
+//should be an easier way of doing this
 - (NSString *)incrementAscii:(NSString *)toConvert {
     //created originally with ascii to string binary conversion, but hard coding seems more reliable
     //http://www.binaryhexconverter.com/binary-to-ascii-text-converter
@@ -998,12 +827,14 @@
     return convertedDone;
 }
 
+//stop the timer when user closes the screen
 -(void)stopTheTimer {
     dispatch_async(dispatch_get_main_queue(), ^{
         ((AppDelegate *) [UIApplication sharedApplication].delegate).jobTimer = nil;
     });
 }
 
+//get everything in job ready to send
 - (void) bundleEverything:(NSNotification *)notification {
     static dispatch_queue_t __serialQueue = nil;
     static dispatch_once_t onceToken;
@@ -1103,6 +934,7 @@
     });
 }
 
+//how many files are we looking for to complete the process
 -(void) countUploads {
     NSString *drawingsPath = [WDDrawingManager drawingPath];
     NSString *filesFolderPath = [drawingsPath stringByAppendingPathComponent:@"Upload"];
@@ -1112,11 +944,13 @@
     self.totalCompletedUploads = @"0";
 }
 
+//begin upload process
 -(void) userTappedUpload:(NSNotification *)notification {
     //beginning upload process
     [self newCloudFolder];
 }
 
+//save every string to the xlsx file
 - (void) threadRipXlsx: (NSNotification *)notification {
     static dispatch_queue_t __serialQueue = nil;
     static dispatch_once_t onceToken;
@@ -1169,6 +1003,7 @@
     });
 }
 
+//is the xlsx saving properly
 - (void) testXlsxPackage {
     BRAOfficeDocumentPackage *xlsxPackage = [BRAOfficeDocumentPackage open: self.packagePath];
     
@@ -1181,6 +1016,7 @@
     }
 }
 
+//mdu page
 - (void) writeXlsxMduMf {
     NSMutableDictionary *plistDict = [self getDictionaryOnMainThread];
     BRAOfficeDocumentPackage *xlsxPackage = [BRAOfficeDocumentPackage open: self.packagePath];
@@ -1278,6 +1114,7 @@
     [xlsxPackage save];
 }
 
+//all information for current pole
 - (NSMutableDictionary *) getSelectedPoleDictionary :(int) poleNumber{
     NSString *selectedPole, *jobNum = [(AppDelegate *) [UIApplication sharedApplication].delegate selectedJob];
     
@@ -1295,6 +1132,7 @@
     return returnDictionary;
 }
 
+//save all poles to xlsx
 - (void) writeXlsxPoles {
     NSMutableDictionary *plistDict = [self getDictionaryOnMainThread];
     NSMutableDictionary *allPoleData = [self getPoleDictionaryOnMainThread];
@@ -1571,6 +1409,7 @@
     xlsxPackage = nil;
 }
 
+//metadata in x,y,z grids?
 - (void) writeXlsxTelemetry {
     NSMutableDictionary *plistDict = [self getDictionaryOnMainThread];
     NSString *insertLocation, *gpsIcon, *insertCoordinates;
@@ -1594,6 +1433,7 @@
     [xlsxPackage save];
 }
 
+//did the user complete all work for this job?
 - (void) writeXlsxCheckList {
     NSMutableDictionary *plistDict = [self getDictionaryOnMainThread];
     NSString *checklist0;
@@ -1655,6 +1495,7 @@
     [xlsxPackage save];
 }
 
+//write the bill of materials
 - (void) writeXlsxBom {
     NSLog(@"Beginning BOM process to XLSX file above now.");
     NSString *demoOutputCell;
@@ -1707,6 +1548,7 @@
     }
 }
 
+//save a visual thumbnail to the xlsx file for reference
 - (void) writeXlsxDrawings {
     NSLog(@"Writing DRAWINGS to XLSX file above now.");
     NSString *sheetName, *dateInsert, *stringToSearch, *foundPath;
@@ -1750,6 +1592,7 @@
     }
 }
 
+//save photos to custom grid in xlsx file
 - (void) writeXlsxPhotos {
     NSLog(@"Writing PHOTOS to XLSX file above now.");
     NSMutableDictionary *plistDict = [self getDictionaryOnMainThread];
@@ -1884,6 +1727,7 @@
     }
 }
 
+//user survey data
 - (void) writeDataPage {
     NSString *dataInsert;
     NSMutableDictionary *plistDict = [self getDictionaryOnMainThread];
@@ -1915,6 +1759,7 @@
     [xlsxPackage save];
 }
 
+//remove unnecessary templates and extra tabs
 - (void) finalSave {
     NSLog(@"FINAL SAVE");
     static dispatch_queue_t __serialQueue = nil;
@@ -1941,6 +1786,7 @@
     });
 }
 
+//logs for writing upload process
 - (void) writeXlsxData {
     NSLog(@"Writing DATA Page 0 to XLSX file above now.");
     [self writeDataPage0];
@@ -1986,58 +1832,6 @@
     NSString *emailInsert = [plistDict objectForKey:@"sowAttField12"];
     if(![emailInsert isEqual:nil])
         [[dataSheet cellForCellReference: @"E30" shouldCreate: YES] setStringValue: emailInsert];
-    
-    [xlsxPackage save];
-    //xlsxPackage=nil;
-}
-
-- (void) writeDataPage1 {
-    //Account Information
-    NSMutableDictionary *plistDict = [self getDictionaryOnMainThread];
-    BRAOfficeDocumentPackage *xlsxPackage = [BRAOfficeDocumentPackage open: self.packagePath];
-    BRAWorksheet *dataSheet = xlsxPackage.workbook.worksheets[2];
-    
-    NSString *romeNumber = [plistDict objectForKey:@"att0"];
-    [[dataSheet cellForCellReference: @"C3" shouldCreate: YES] setStringValue: romeNumber];
-    
-    [xlsxPackage save];
-    //xlsxPackage=nil;
-}
-
-- (void) writeDataPage2 {
-    //SoW
-    NSMutableDictionary *plistDict = [self getDictionaryOnMainThread];
-    BRAOfficeDocumentPackage *xlsxPackage = [BRAOfficeDocumentPackage open: self.packagePath];
-    BRAWorksheet *sowSheet = xlsxPackage.workbook.worksheets[4];
-    
-    NSString *value101 = [plistDict objectForKey:@"sowText1"];
-    NSString *value201 = [plistDict objectForKey:@"sowView2"];
-    NSString *value202 = [plistDict objectForKey:@"sowView21"];
-    NSString *value301 = [plistDict objectForKey:@"sowView3"];
-    NSString *value302 = [plistDict objectForKey:@"sowView31"];
-    NSString *value401 = [plistDict objectForKey:@"sowView4"];
-    NSString *value501 = [plistDict objectForKey:@"sowView5"];
-    NSString *value601 = [plistDict objectForKey:@"sowView6"];
-    NSString *value701 = [plistDict objectForKey:@"sowView7"];
-    
-    if(![value101 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C3" shouldCreate: YES] setStringValue: value101];
-    if(![value201 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C9" shouldCreate: YES] setStringValue: value201];
-    if(![value202 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C10" shouldCreate: YES] setStringValue: value202];
-    if(![value301 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C13" shouldCreate: YES] setStringValue: value301];
-    if(![value302 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C14" shouldCreate: YES] setStringValue: value302];
-    if(![value401 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C17" shouldCreate: YES] setStringValue: value401];
-    if(![value501 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C20" shouldCreate: YES] setStringValue: value501];
-    if(![value601 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C23" shouldCreate: YES] setStringValue: value601];
-    if(![value701 isEqual:nil])
-        [[sowSheet cellForCellReference: @"C26" shouldCreate: YES] setStringValue: value701];
     
     [xlsxPackage save];
     //xlsxPackage=nil;

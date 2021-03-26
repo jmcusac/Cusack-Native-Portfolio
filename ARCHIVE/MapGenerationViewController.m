@@ -2,11 +2,13 @@
 //  MapGenerationViewController.m
 //  TechAssistant
 //
-//  Copyright (c) 2013-2021 B2Innovation, L.L.C. All rights reserved.
+//  Copyright © 2013-2021 B2Innovation, L.L.C. All rights reserved
+//  Created by Jason Cusack on 09/16/18
 //
 
 #import "MapGenerationViewController.h"
 
+//we need to be at the right default distance in order to view the job
 #define ZOOM_LEVEL 17
 
 @interface MapGenerationViewController ()
@@ -76,6 +78,7 @@
     self.allFootages = nil;
 }
 
+//user has searched for a location and we need to zoom out to observe results better
 - (void) zoomAction {
     //USA coordinte data
     MKCoordinateRegion region;
@@ -167,6 +170,7 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+//if nothing found, go to the statue of liberty
 -(void) findCustom {
     NSLog(@"GO TO CUSTOM");
     NSString *location=@"1 Liberty Island, New York, NY 10004";
@@ -243,6 +247,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+//custom icons for top bar
 - (void) barButtonUpdate {
     UIBarButtonItem *rotateItem, *userItem, *locationItem, *polesItem;
     
@@ -322,6 +327,7 @@
     self.navigationItem.rightBarButtonItems = upperRightBarButtons;
 }
 
+//default custom icons for "demo" version
 - (void) setBarButtons {
     UIBarButtonItem *rotateItem, *userItem, *locationItem, *polesItem;
     
@@ -433,6 +439,7 @@
     [self zoomAction];
 }
 
+//when building poles into x,y,z array -> setup graphics
 -(MKOverlayRenderer *) mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay {
     if ([overlay isKindOfClass:[MKPolyline class]]) {
         MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:overlay];
@@ -443,12 +450,14 @@
     return nil;
 }
 
+//clear the map
 - (void) removeVisualAll {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.mapView removeAnnotations:[self.mapView annotations]];
     });
 }
 
+//add to users' maps to draw onto
 - (IBAction)boundsScreenShot:(UIBarButtonItem *)sender {
     CGRect rect = [[UIScreen mainScreen] bounds];
     rect.size.height -= 128;
@@ -527,6 +536,7 @@
 
 }
 
+//user readability
 -(NSMutableString *) addCommas:(NSMutableString *)footageString {
     //2147483647
     NSMutableString *finalString = [NSMutableString stringWithFormat:@"%@", footageString];
@@ -557,6 +567,7 @@
     return finalString;
 }
 
+//total footage and individual footages
 -(void) updateFootage {
     int footageInt = [self.totalFootage intValue];
     NSMutableString *footageString = [NSMutableString stringWithFormat:@"%d", footageInt];
@@ -620,6 +631,7 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+//when user presses and holds the map, a pole must be dropped
 - (IBAction)dropPins:(UIBarButtonItem *)sender {
     UIBarButtonItem *PinItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Poles:ON", @"Poles:ON")
                                                                  style:UIBarButtonItemStyleBordered
@@ -661,6 +673,7 @@
     
 }
 
+//by client request
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     
 }
@@ -680,6 +693,7 @@
     return poleNumber;
 }
 
+//one pole inserted into map
 -(IBAction) userDroppedPole:(UIGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer.state != UIGestureRecognizerStateBegan) {
         return;
@@ -715,6 +729,7 @@
     [self drawTheLine];
 }
 
+//custom pole icon
 -(MKPinAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(MKPointAnnotation *)annotation {
     NSLog(@"MAP GENERATION CONTROLLER: View for annotation");
 
@@ -728,6 +743,7 @@
     return pinView;
 }
 
+//map a line in between poles
 - (void)drawTheLine {
     NSMutableDictionary *dicData = [(AppDelegate *) [UIApplication sharedApplication].delegate surveyDataDictionary];
     NSMutableDictionary *poleLocationsDic = [dicData objectForKey:@"coordinatesDictionary"];
@@ -769,6 +785,7 @@
     [self updateFootage];
 }
 
+//user wants to search for a custom location
 - (void) customAddressController {
     if ([self.navigationController.visibleViewController isKindOfClass:[UIAlertController class]]) {
         [self dismissViewControllerAnimated:YES completion:nil];

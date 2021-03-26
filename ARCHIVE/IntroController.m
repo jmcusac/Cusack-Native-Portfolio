@@ -2,7 +2,8 @@
 //  IntroController.m
 //  TechAssistant
 //
-//  Copyright © 2013-2021 B2Innovation, L.L.C. All rights reserved.
+//  Copyright © 2013-2021 B2Innovation, L.L.C. All rights reserved
+//  Created by Jason Cusack on 09/03/18
 //
 
 #import "IntroController.h"

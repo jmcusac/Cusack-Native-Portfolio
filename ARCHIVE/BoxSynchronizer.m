@@ -39,17 +39,15 @@
         delegate.userJobsDictionary = [[NSMutableDictionary alloc] init];
         delegate.poleDataDictionary = [[NSMutableDictionary alloc] init];
         
-        //pool all local files
+        //KVOs
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(bundleEverything:)
                                                      name:@"com.cusoft.bundleEverything"
                                                    object:nil];
-        //thread rip through the xlsx generation
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(threadRipXlsx:)
                                                      name:@"com.cusoft.threadRipXlsx"
                                                    object:nil];
-        //create the cloud folders
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(userTappedUpload:)
                                                      name:@"com.cusoft.userTappedUpload"
@@ -292,10 +290,8 @@
     
     UIGraphicsBeginPDFContextToData(pdfData, [UIScreen mainScreen].bounds, nil);
     
-    // Draw Page 1
+    // Draw Page
     [self drawCoverSheet0:plistDict];
-    [self drawCoverSheet1:plistDict];
-    [self drawCoverSheet2:plistDict];
     
     // Draw Photo Page
     [self drawPhotoPage:plistDict];

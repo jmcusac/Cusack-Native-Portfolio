@@ -526,6 +526,7 @@
     self.cloudOfflineButton.hidden=FALSE;
 }
 
+//animations
 #pragma mark blink effect
 - (void)startBlink {
     self.cloudCompleteButton.hidden=TRUE;

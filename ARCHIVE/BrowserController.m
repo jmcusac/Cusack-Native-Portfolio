@@ -25,6 +25,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     filesBeingUploaded_ = [[NSMutableSet alloc] init];
     activities_ = [[WDActivityManager alloc] init];
     
+    //KVOs
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(drawingChanged:)
                                                  name:UIDocumentStateChangedNotification
@@ -85,18 +86,21 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self installAllInitial];
 }
 
+//added new drawing, reload the container
 -(void) reloadTheView {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.collectionView reloadData];
     });
 }
 
+//first time we enter, let's ensure everything is installed
 -(void) installAllInitial {
     NSString *drawingsPath = [WDDrawingManager drawingPath];
     NSString *filesFolderPath = [drawingsPath stringByAppendingPathComponent:@"Downloads"];
     NSArray *downloadedFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:filesFolderPath error:nil];
     int downloadedInt = (int)[downloadedFiles count];
     
+    //skipped if everything is already installed
     if(downloadedInt>0) {
         NSLog(@"GALLERY: %d files to install", downloadedInt);
         static dispatch_queue_t __serialQueue = nil;
@@ -154,6 +158,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     });
 }
 
+//new file successfully installed
 -(void) updateProgressView:(int)printInt {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSMutableDictionary *dicData = [(AppDelegate *) [UIApplication sharedApplication].delegate surveyDataDictionary];
@@ -179,6 +184,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self reloadTheView];
 }
 
+//iphone specific menu
 -(IBAction) menuButtonPressed:(id)sender {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Gallery Nav Options"
                                                                              message:@"\nPlease select one."
@@ -240,6 +246,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+//iPad specific bar
 - (void) setBarButtons {
     NSMutableArray * upperLeftBarButtons = [NSMutableArray array];
     self.navigationItem.title = [NSString stringWithFormat:@"%@ Gallery", [(AppDelegate *) [UIApplication sharedApplication].delegate selectedJob]];
@@ -311,6 +318,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self hideBar];
 }
 
+//default state : to be updated on user need
 - (NSArray *) defaultToolbarItems {
     if (!toolbarItems_) {
         toolbarItems_ = [[NSMutableArray alloc] init];
@@ -444,6 +452,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     return toolbarItems_;
 }
 
+//import from camera
 - (IBAction)goToCameraPage:(id)sender {
     [self dismissPopover];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Modules" bundle: nil];
@@ -461,6 +470,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
 
 #pragma mark -
 
+//user clicked an item in the view : load the drawing and exit gallery
 - (void) startEditingDrawing:(WDDocument *)document {
     [self setEditing:NO animated:NO];
     
@@ -470,6 +480,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self.navigationController pushViewController:canvasController animated:YES];
 }
 
+//empty drawing of any size
 - (void) createNewDrawing:(id)sender {
     [self dismissViewControllerAnimated:YES
                              completion:nil];
@@ -526,6 +537,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     }
 }
 
+//import from Apple Photos
 - (void) importFromAlbum:(id)sender {
     [self importFromImagePicker:sender sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
 }
@@ -545,6 +557,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self importFromImagePicker:sender sourceType:UIImagePickerControllerSourceTypeCamera];
 }
 
+//import from generic source : usually camera
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     int imageSize = 1;
     UIImage *image = info[UIImagePickerControllerOriginalImage];
@@ -590,6 +603,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     }
 }
 
+//react to less screen real estate
 - (void) keyboardWillShow:(NSNotification *)aNotification {
     if (!editingThumbnail_ || blockingView_) {
         return;
@@ -628,6 +642,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [UIView animateWithDuration:[duration doubleValue] animations:^{ blockingView_.alpha = 1; }];
 }
 
+//vector shadows must be maintained manually in a scroll context
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (blockingView_ && editingThumbnail_) {
         AppDelegate *delegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
@@ -636,6 +651,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     }
 }
 
+//user closed the system
 - (void) didEnterBackground:(NSNotification *)aNotification {
     if (!editingThumbnail_) {
         return;
@@ -655,14 +671,17 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     return (editingThumbnail_ ? NO : YES);
 }
 
+//user tapped outside of editting process
 - (void) blockingViewTapped:(id)sender {
     [editingThumbnail_ stopEditing];
 }
 
+//we're altering an individual file
 - (void) thumbnailDidBeginEditing:(WDThumbnailView *)thumbView {
     editingThumbnail_ = thumbView;
 }
 
+//we're done altering individual file
 - (void) thumbnailDidEndEditing:(WDThumbnailView *)thumbView {
     [UIView animateWithDuration:0.2f
                      animations:^{ blockingView_.alpha = 0; }
@@ -674,6 +693,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     editingThumbnail_ = nil;
 }
 
+//all TechAssistant files are fileName.cusack
 - (WDThumbnailView *) getThumbnail:(NSString *)filename {
     NSString *barefile = [[filename stringByDeletingPathExtension] stringByAppendingPathExtension:@"cusack"];
     NSIndexPath *indexPath = [[WDDrawingManager sharedInstance] indexPathForFilename:barefile];
@@ -693,6 +713,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self reloadTheView];
 }
 
+//remove user requested deletions and reload view
 - (void) drawingsDeleted:(NSNotification *)aNotification {
     NSArray *indexPaths = aNotification.object;
     [self.collectionView deleteItemsAtIndexPaths:indexPaths];
@@ -736,6 +757,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [[WDDrawingManager sharedInstance] deleteDrawings:selectedDrawings_];
 }
 
+//separate view dedicated to permanently deleting files
 - (void) showDeleteMenu:(id)sender {
     if (deleteSheet_) {
         [self dismissPopover];
@@ -755,7 +777,8 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [deleteSheet_ showFromBarButtonItem:sender animated:YES];
 }
      
- - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+ //action sheets work better than uiAlertViews in every way
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet == deleteSheet_) {
         if (buttonIndex == actionSheet.destructiveButtonIndex) {
             [self deleteSelectedDrawings];
@@ -798,11 +821,13 @@ NSString *AttachmentNotification = @"AttachmentNotification";
 
 #pragma mark - Toolbar
 
+//are we currently editting?
 - (void) properlyEnableToolbarItems {
     deleteItem_.enabled = [selectedDrawings_ count] == 0 ? NO : YES;
     emailItem_.enabled = ([selectedDrawings_ count] > 0 && [selectedDrawings_ count] < 6) ? YES : NO;
 }
 
+//new toolbar for editting
 - (NSArray *) editingToolbarItems {
     NSMutableArray *items = [NSMutableArray array];
     
@@ -839,18 +864,21 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     return items;
 }
 
+//leaving collection view
 - (void) goToNav:(id)sender {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Modules" bundle: nil];
     WDBrowserController *galleryViewController = (WDBrowserController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"NavPage"];
     [self.navigationController pushViewController:galleryViewController animated:YES];
 }
 
+//import a map from Google
 - (void) goToMakeMap:(id)sender {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Modules" bundle: nil];
     MapGenerationViewController *makeMapViewController = (MapGenerationViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"MakeMapPage"];
     [self.navigationController pushViewController:makeMapViewController animated:YES];
 }
 
+//coming from a view without a bar
 -(void) showBar {
     [self.navigationController setToolbarHidden:NO animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -858,6 +886,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     self.navigationController.toolbar.translucent = NO;
 }
 
+//coming from a view with a bar
 -(void) hideBar {
     [self.navigationController setToolbarHidden:YES animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -866,6 +895,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
 }
 
 #pragma mark - Memos
+//saving a global memo for attachment to email output
 -(IBAction) memoAction:(id)sender {
     if(![self.restorationIdentifier isEqual: @"MemoPage"]){
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"TechAssistant" bundle: nil];
@@ -875,6 +905,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
 }
 
 #pragma mark - Panels
+//let the user change font : based on client request
 - (void) showFontLibraryPanel:(id)sender {
     if (fontLibraryController_) {
         [self dismissPopover];
@@ -892,6 +923,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [popoverController_ presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
+//show the user what we're processing
 - (void) showActivityPanel:(id)sender {
     if (activityController_) {
         [self dismissPopover];
@@ -910,6 +942,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [popoverController_ presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
+//installing a file removes one item from activity queue
 - (void) activityCountChanged:(NSNotification *)aNotification {
     NSUInteger numActivities = activities_.count;
     
@@ -938,6 +971,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     }
 }
 
+//readme
 - (void) showHelp:(id)sender {
     WDHelpController *helpController = [[WDHelpController alloc] initWithNibName:nil bundle:nil];
     
@@ -946,6 +980,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
 
 #pragma mark - Popovers
 
+//get rid of subview in a fun way
 - (void) dismissPopoverAnimated:(BOOL)animated {
     if (popoverController_) {
         [popoverController_ dismissPopoverAnimated:animated];
@@ -968,6 +1003,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self dismissPopoverAnimated:NO];
 }
 
+//another view called when view present on top of controller
 - (void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     if (popoverController == popoverController_) {
         popoverController_ = nil;
@@ -980,6 +1016,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     activityController_ = nil;
 }
 
+//user click away from view
 - (void)didDismissModalView {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -1006,6 +1043,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+//attach selected drawings in HTML email
 -(void) emailDrawings:(id)sender {
     if([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
         [self dismissViewControllerAnimated:YES completion:NULL];
@@ -1104,6 +1142,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     }
 }
 
+//user wishes to chose drawings to email
 -(void) showEmailPanel:(id)sender {
     if (exportController_ && exportController_.mode == kWDExportViaEmailMode) {
         [self dismissPopover];
@@ -1128,6 +1167,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     }
 }
 
+//user requests single cloud file not present in package
 -(void) reallyShowBoxImportPanel:(id)sender {
     if (importController_) {
 		[self dismissPopover];
@@ -1146,6 +1186,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
 
 #pragma mark -
 
+//correct file type chosen?
 - (void) showImportErrorMessage:(NSString *)filename {
     NSString *format = NSLocalizedString(@"Could not import “%@”. It may be corrupt or in a format that's not supported.",
                                          @"Could not import “%@”. It may be corrupt or in a format that's not supported.");
@@ -1157,6 +1198,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [alertView show];
 }
 
+//should never be called : here in case a video file is mis labeled as a JPG or something
 - (void) showImportMemoryWarningMessage:(NSString *)filename {
     NSString *format = NSLocalizedString(@"Could not import “%@”. There is not enough available memory.",
                                          @"Could not import “%@”. There is not enough available memory.");
@@ -1168,6 +1210,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [alertView show];
 }
 
+//files accepted
 - (void) showImportBeginMessage {
     NSString *format = NSLocalizedString(@"Executing first time cloud import to your gallery...",
                                          @"Executing first time cloud import to your gallery...");
@@ -1181,6 +1224,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
 
 #pragma mark -
 
+//local save path
 - (NSString*) appFolderPath {
     NSString* appFolderPath = @"TechAssistant";
     if (![appFolderPath isAbsolutePath]) {
@@ -1190,6 +1234,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     return appFolderPath;
 }
 
+//count up the usuable PDF files
 #pragma mark import drawing
 - (void)installPDFs:(void (^)(void))completionBlock {
     NSString* downloadPath = [[WDDrawingManager drawingPath] stringByAppendingPathComponent:@"/Downloads"];
@@ -1205,6 +1250,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self installPDFs:pdfURLs index:0 completion:completionBlock];
 }
 
+//install one of the PDF files
 - (void)installPDFs:(NSArray *)pdfURLs index:(NSInteger)index completion:(void (^)(void))completionBlock {
     int printInt = ((int)index + 1);
     NSLog(@"File %d: %@", printInt, [pdfURLs objectAtIndex:index]);
@@ -1232,6 +1278,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self installPDFs:pdfURLs index:index + 1 completion:completionBlock];
 }
 
+//count up the vector files
 - (void)installSVGs:(void (^)(void))completionBlock {
     NSString* downloadPath = [[WDDrawingManager drawingPath] stringByAppendingPathComponent:@"/Downloads"];
     NSArray *dirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:downloadPath error:NULL];
@@ -1245,6 +1292,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self installSVGs:svgURLs index:0 completion:completionBlock];
 }
 
+//install one vector file
 - (void)installSVGs:(NSArray *)svgURLs index:(NSInteger)index completion:(void (^)(void))completionBlock {
     int printInt = ((int)index + 1);
     NSLog(@"File %d: %@", printInt, [svgURLs objectAtIndex:index]);
@@ -1279,6 +1327,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self installSVGs:svgURLs index:index + 1 completion:completionBlock];
 }
 
+//count up the photos
 - (void)installPictureFiles:(void (^)(void))completionBlock {
     NSString* downloadPath = [[WDDrawingManager drawingPath] stringByAppendingPathComponent:@"/Downloads"];
     NSArray *dirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:downloadPath error:NULL];
@@ -1295,6 +1344,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     [self installPictureFiles:imgURLs index:0 completion:completionBlock];
 }
 
+//install one photo
 - (void)installPictureFiles:(NSArray *)imgURLs index:(NSInteger)index completion:(void (^)(void))completionBlock {
     int printInt = ((int)index + 1);
     NSLog(@"File %d: %@", printInt, [imgURLs objectAtIndex:index]);
@@ -1325,10 +1375,12 @@ NSString *AttachmentNotification = @"AttachmentNotification";
 
 #pragma mark - Storyboard / Collection View
 
+//transition away from collection view to ID
 - (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
     return !self.isEditing;
 }
 
+//save thumbnail and metadata changes during an exit
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"editDrawing"]) {
         WDCanvasController *canvasController = [segue destinationViewController];
@@ -1338,6 +1390,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     }
 }
 
+//user wishes to edit, so pull from the selected thumbnail
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath; {
     WDThumbnailView *thumbnailView = (WDThumbnailView *) [collectionView cellForItemAtIndexPath:indexPath];
     thumbnailView.shouldShowSelectionIndicator = self.isEditing;
@@ -1345,6 +1398,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     return YES;
 }
 
+//top of screen needs to write out file name and zoom level
 - (void) updateSelectionTitle {
     NSUInteger count = selectedDrawings_.count;
     NSString*format;
@@ -1386,6 +1440,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     return [[WDDrawingManager sharedInstance] numberOfDrawings];
 }
 
+//custom implementation of user visible data in collection view
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath; {
     WDThumbnailView *thumbnail = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
     NSArray *drawings = [[WDDrawingManager sharedInstance] drawingNames];
@@ -1405,6 +1460,7 @@ NSString *AttachmentNotification = @"AttachmentNotification";
     return thumbnail;
 }
 
+//save current drawing name to dictionary
 - (void) saveStringData: (NSString*)obj forKey:(NSString*)key {
     NSMutableDictionary *dicData = [(AppDelegate *) [UIApplication sharedApplication].delegate surveyDataDictionary];
     if(obj != nil)

@@ -69,7 +69,11 @@
 		CE59DDC9260BD96900177333 /* Chat App 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chat App 1024.png"; sourceTree = "<group>"; };
 		CE59DDCA260BD96900177333 /* Chat App 167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chat App 167.png"; sourceTree = "<group>"; };
 		CE59DDCB260BD96900177333 /* Chat App 20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chat App 20.png"; sourceTree = "<group>"; };
-		CEEEBF87260BD10400AFDC7B /* CusackPortfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = CusackPortfolio.app; path = "/Users/user/Desktop/CusackPortfolio/build/Debug-iphoneos/CusackPortfolio.app"; sourceTree = "<absolute>"; };
+		CED3F204260E239E0053AB0B /* CusackPortfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CusackPortfolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED3F205260E23B40053AB0B /* IntroController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroController.m; sourceTree = "<group>"; };
+		CED3F206260E23B40053AB0B /* BoxSynchronizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoxSynchronizer.m; sourceTree = "<group>"; };
+		CED3F207260E23B40053AB0B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CED3F208260E23B40053AB0B /* MapGenerationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapGenerationViewController.m; sourceTree = "<group>"; };
 		D21F59C32434CC0300DDD1A0 /* ChatScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatScrollView.swift; sourceTree = "<group>"; };
 		D2DA94762406B7DE00468CC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D2DA94782406B7DE00468CC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -135,11 +139,24 @@
 			path = Products;
 			sourceTree = "<group>";
 		};
+		CED3F209260E23BE0053AB0B /* ARCHIVE */ = {
+			isa = PBXGroup;
+			children = (
+				CED3F207260E23B40053AB0B /* AppDelegate.m */,
+				CED3F206260E23B40053AB0B /* BoxSynchronizer.m */,
+				CED3F205260E23B40053AB0B /* IntroController.m */,
+				CED3F208260E23B40053AB0B /* MapGenerationViewController.m */,
+			);
+			path = ARCHIVE;
+			sourceTree = "<group>";
+		};
 		D2DA946A2406B7DE00468CC7 = {
 			isa = PBXGroup;
 			children = (
+				CED3F209260E23BE0053AB0B /* ARCHIVE */,
 				D2DA94752406B7DE00468CC7 /* CusackPortfolio */,
 				CE9C1FCC260BE867003E26BA /* Products */,
+				CED3F204260E239E0053AB0B /* CusackPortfolio.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -240,7 +257,7 @@
 			);
 			name = CusackPortfolio;
 			productName = CusackPortfolio;
-			productReference = CEEEBF87260BD10400AFDC7B /* CusackPortfolio.app */;
+			productReference = CED3F204260E239E0053AB0B /* CusackPortfolio.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

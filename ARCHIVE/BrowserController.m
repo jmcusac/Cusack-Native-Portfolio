@@ -1,18 +1,18 @@
 //
-//  WDBrowserController.m
+//  BrowserController.m
 //  TechAssistant©
 //
 //  Copyright © 2013-2021 B2Innovation, L.L.C.
 //  Created by Jason Cusack on 08/09/18
 //
 
-#import "WDBrowserController.h"
+#import "BrowserController.h"
 
 #define kEditingHighlightRadius     125
 
-NSString *WDAttachmentNotification = @"WDAttachmentNotification";
+NSString *AttachmentNotification = @"AttachmentNotification";
 
-@implementation WDBrowserController
+@implementation BrowserController
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
@@ -122,6 +122,7 @@ NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     }
 }
 
+//display a visual indicator for user to monitor installation of their drawings
 -(void) fullProgressView {
     dispatch_async(dispatch_get_main_queue(), ^{
         float progressCalculation = 1.0f;

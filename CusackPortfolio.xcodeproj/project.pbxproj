@@ -30,7 +30,7 @@
 		CED3F206260E23B40053AB0B /* BoxSynchronizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoxSynchronizer.m; sourceTree = "<group>"; };
 		CED3F207260E23B40053AB0B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CED3F208260E23B40053AB0B /* MapGenerationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapGenerationViewController.m; sourceTree = "<group>"; };
-		CED3F20A260E36220053AB0B /* WDBrowserController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDBrowserController.m; sourceTree = "<group>"; };
+		CED3F20A260E36220053AB0B /* BrowserController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrowserController.m; sourceTree = "<group>"; };
 		D21F59C32434CC0300DDD1A0 /* ChatScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatScrollView.swift; sourceTree = "<group>"; };
 		D2DA94762406B7DE00468CC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D2DA94782406B7DE00468CC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 		CED3F209260E23BE0053AB0B /* ARCHIVE */ = {
 			isa = PBXGroup;
 			children = (
-				CED3F20A260E36220053AB0B /* WDBrowserController.m */,
+				CED3F20A260E36220053AB0B /* BrowserController.m */,
 				CED3F207260E23B40053AB0B /* AppDelegate.m */,
 				CED3F206260E23B40053AB0B /* BoxSynchronizer.m */,
 				CED3F205260E23B40053AB0B /* IntroController.m */,

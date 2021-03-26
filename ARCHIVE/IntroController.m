@@ -35,6 +35,7 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+//simplified front end to funnel user into workload
 -(void) setBarButtons {
     NSString *version = [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleVersionKey];
     NSString *productName = [NSString stringWithFormat:@"%@© %@", [AppDelegate deliverProductName], version];
@@ -93,6 +94,7 @@
     [self setToolbarItems:[NSArray arrayWithArray:bottomBarButtons] animated:YES];
 }
 
+//clients requesting users engage with updated iOS
 -(void) outOfDateAlert {
     if ([AppDelegate throwOutOfDateWarning]) {
         NSLog(@"INTRO VIEW CONTROLLER: upload ready alert: true");
@@ -118,6 +120,7 @@
     [self presentViewController:outOfDateAlert animated:YES completion:nil];
 }
 
+//KVOs
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -162,6 +165,7 @@
     [super viewWillDisappear:animated];
 }
 
+//credentials accepted
 - (void)showJobsPage {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"TechAssistant" bundle: nil];
     SelectJob *jobsPageController = (SelectJob *)[mainStoryboard instantiateViewControllerWithIdentifier: @"JobsPage"];
@@ -180,6 +184,7 @@
     [super didReceiveMemoryWarning];
 }
 
+//halt animations and run login window
 -(void) logIn {
     [self stopProcessingBlink];
     if ([self.navigationController.visibleViewController isKindOfClass:[UIAlertController class]]) {
@@ -263,6 +268,7 @@
     }
 }
 
+//user is manually refreshing from the cloud
 - (void)reInitNotification {
     [self startBlink];
     
@@ -280,16 +286,19 @@
     [self presentViewController:alertController animated:YES completion:nil];*/
 }
 
+//user manually tapped login without waiting for automated process
 - (IBAction)logIn:(id)sender {
     [self logIn];
 }
 
+//user requested legal page
 - (IBAction) goToLegalPage:(id) sender {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"TechAssistant" bundle: nil];
     LegalController *onwardController = (LegalController *)[mainStoryboard instantiateViewControllerWithIdentifier: @"LegalPage"];
     [self.navigationController pushViewController:onwardController animated:YES];
 }
 
+//user has not agreed to legal
 - (void) goToLegal {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"TechAssistant" bundle: nil];
     LegalController *onwardController = (LegalController *)[mainStoryboard instantiateViewControllerWithIdentifier: @"LegalPage"];
@@ -325,6 +334,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+//user has entered info into all fields
 - (void)checkJobForUser:(NSString *)userName {
     AppDelegate* delegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
     FieldEngineer* engineer = [delegate.fieldEngineerDictionary objectForKey:userName];
@@ -345,6 +355,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+//run animations before window appears
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -359,6 +370,7 @@
     [self setBarButtons];
 }
 
+//begin reading current jobs
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -368,6 +380,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"com.cusoft.parseUserJobList" object:nil];
 }
 
+//does the client allow user to use software in both landscape AND portrait mode?
 -(BOOL) shouldAutorotate {
     return YES;
 }
@@ -376,6 +389,7 @@
     return (UIInterfaceOrientationMaskPortrait);
 }
 
+//allow user login
 -(void) showBar {
     [self.navigationController setToolbarHidden:NO animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -383,6 +397,7 @@
     self.navigationController.toolbar.translucent = NO;
 }
 
+//if navigating here from a toolbar class
 -(void) hideBar {
     [self.navigationController setToolbarHidden:YES animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -390,6 +405,7 @@
     self.navigationController.toolbar.translucent = NO;
 }
 
+//ready for login
 -(void) updateJobListComplete:(NSNotification *)notification {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"com.cusoft.parseUsersList" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"com.cusoft.parseUserJobList" object:nil];
@@ -404,6 +420,7 @@
     [self stopBlink];
 }
 
+//iphone specific menu
 -(IBAction) menuButtonPressed:(id)sender {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Welcome Options"
                                                                              message:@"\nPlease select one."
@@ -437,6 +454,7 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+//notify user of last instance of full cloud sync
 -(void) dateEntry {
     [AppDelegate playSave];
     NSDate *currDate = [NSDate date];
@@ -452,12 +470,12 @@
     }
 }
 
+//animate and consume API
 - (void) boxAPIInitiateLogin {
     [self startBlink];
     
-    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOXContentClient *contentClient = [BOXContentClient defaultClient];
-        [contentClient authenticateWithCompletionBlock:^(BOXUser *user, NSError *error) {
+    BOXContentClient *contentClient = [BOXContentClient defaultClient];
+    [contentClient authenticateWithCompletionBlock:^(BOXUser *user, NSError *error) {
             if(error) {
                 NSLog(@"User cancellation? Failed with error %@.", error);
                 [self oopsNotification];
@@ -468,10 +486,10 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"com.cusoft.updateJobsList" object:nil];
                 [self dateEntry];
             }
-        }];
-    //});
+    }];
 }
 
+//first time use
 - (void)acceptedLegal:(NSNotification *)notification {
     [self startBlink];
 
@@ -490,6 +508,7 @@
     }];
 }
 
+//Find a Starbucks
 - (void)oopsNotification {
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Offline Mode" message: @"Using previously saved cloud files, if already available on this iPad/iPhone." preferredStyle: UIAlertControllerStyleAlert];
     

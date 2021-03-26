@@ -7,28 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE59DDB4260BD88900177333 /* Icon-Spotlight-40.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA1260BD88800177333 /* Icon-Spotlight-40.png */; };
-		CE59DDB5260BD88900177333 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA2260BD88800177333 /* Icon-Small-50.png */; };
-		CE59DDB6260BD88900177333 /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA3260BD88800177333 /* Icon-76@2x.png */; };
-		CE59DDB7260BD88900177333 /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA4260BD88800177333 /* Icon-60@2x.png */; };
-		CE59DDB8260BD88900177333 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA5260BD88800177333 /* Icon@2x.png */; };
-		CE59DDB9260BD88900177333 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA6260BD88800177333 /* Icon-72.png */; };
-		CE59DDBA260BD88900177333 /* Icon-Spotlight-40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA7260BD88800177333 /* Icon-Spotlight-40@3x.png */; };
-		CE59DDBB260BD88900177333 /* Icon-76@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA8260BD88800177333 /* Icon-76@3x.png */; };
-		CE59DDBC260BD88900177333 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDA9260BD88800177333 /* Icon-Small.png */; };
-		CE59DDBD260BD88900177333 /* Icon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDAA260BD88800177333 /* Icon-60.png */; };
-		CE59DDBE260BD88900177333 /* Icon-Small-50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDAB260BD88800177333 /* Icon-Small-50@2x.png */; };
-		CE59DDBF260BD88900177333 /* Icon-Spotlight-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDAC260BD88800177333 /* Icon-Spotlight-40@2x.png */; };
-		CE59DDC0260BD88900177333 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDAD260BD88800177333 /* Icon-76.png */; };
-		CE59DDC1260BD88900177333 /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDAE260BD88800177333 /* Icon-60@3x.png */; };
-		CE59DDC2260BD88900177333 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDAF260BD88800177333 /* Icon-72@2x.png */; };
-		CE59DDC3260BD88900177333 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDB0260BD88800177333 /* Icon.png */; };
-		CE59DDC4260BD88900177333 /* Icon-Small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDB1260BD88900177333 /* Icon-Small@3x.png */; };
-		CE59DDC5260BD88900177333 /* Icon-iPadPro@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDB2260BD88900177333 /* Icon-iPadPro@2x.png */; };
-		CE59DDC6260BD88900177333 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDB3260BD88900177333 /* Icon-Small@2x.png */; };
-		CE59DDCC260BD96900177333 /* Chat App 1024.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDC9260BD96900177333 /* Chat App 1024.png */; };
-		CE59DDCD260BD96900177333 /* Chat App 167.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDCA260BD96900177333 /* Chat App 167.png */; };
-		CE59DDCE260BD96900177333 /* Chat App 20.png in Resources */ = {isa = PBXBuildFile; fileRef = CE59DDCB260BD96900177333 /* Chat App 20.png */; };
 		D21F59C42434CC0400DDD1A0 /* ChatScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21F59C32434CC0300DDD1A0 /* ChatScrollView.swift */; };
 		D2DA94772406B7DE00468CC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DA94762406B7DE00468CC7 /* AppDelegate.swift */; };
 		D2DA94792406B7DE00468CC7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DA94782406B7DE00468CC7 /* SceneDelegate.swift */; };
@@ -47,28 +25,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CE59DDA1260BD88800177333 /* Icon-Spotlight-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Spotlight-40.png"; sourceTree = "<group>"; };
-		CE59DDA2260BD88800177333 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
-		CE59DDA3260BD88800177333 /* Icon-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@2x.png"; sourceTree = "<group>"; };
-		CE59DDA4260BD88800177333 /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@2x.png"; sourceTree = "<group>"; };
-		CE59DDA5260BD88800177333 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		CE59DDA6260BD88800177333 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
-		CE59DDA7260BD88800177333 /* Icon-Spotlight-40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Spotlight-40@3x.png"; sourceTree = "<group>"; };
-		CE59DDA8260BD88800177333 /* Icon-76@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@3x.png"; sourceTree = "<group>"; };
-		CE59DDA9260BD88800177333 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
-		CE59DDAA260BD88800177333 /* Icon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60.png"; sourceTree = "<group>"; };
-		CE59DDAB260BD88800177333 /* Icon-Small-50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50@2x.png"; sourceTree = "<group>"; };
-		CE59DDAC260BD88800177333 /* Icon-Spotlight-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Spotlight-40@2x.png"; sourceTree = "<group>"; };
-		CE59DDAD260BD88800177333 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
-		CE59DDAE260BD88800177333 /* Icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@3x.png"; sourceTree = "<group>"; };
-		CE59DDAF260BD88800177333 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
-		CE59DDB0260BD88800177333 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		CE59DDB1260BD88900177333 /* Icon-Small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@3x.png"; sourceTree = "<group>"; };
-		CE59DDB2260BD88900177333 /* Icon-iPadPro@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-iPadPro@2x.png"; sourceTree = "<group>"; };
-		CE59DDB3260BD88900177333 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
-		CE59DDC9260BD96900177333 /* Chat App 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chat App 1024.png"; sourceTree = "<group>"; };
-		CE59DDCA260BD96900177333 /* Chat App 167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chat App 167.png"; sourceTree = "<group>"; };
-		CE59DDCB260BD96900177333 /* Chat App 20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chat App 20.png"; sourceTree = "<group>"; };
 		CED3F204260E239E0053AB0B /* CusackPortfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CusackPortfolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED3F205260E23B40053AB0B /* IntroController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroController.m; sourceTree = "<group>"; };
 		CED3F206260E23B40053AB0B /* BoxSynchronizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoxSynchronizer.m; sourceTree = "<group>"; };
@@ -103,35 +59,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CE59DDC8260BD88F00177333 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				CE59DDCB260BD96900177333 /* Chat App 20.png */,
-				CE59DDCA260BD96900177333 /* Chat App 167.png */,
-				CE59DDC9260BD96900177333 /* Chat App 1024.png */,
-				CE59DDAA260BD88800177333 /* Icon-60.png */,
-				CE59DDA4260BD88800177333 /* Icon-60@2x.png */,
-				CE59DDAE260BD88800177333 /* Icon-60@3x.png */,
-				CE59DDA6260BD88800177333 /* Icon-72.png */,
-				CE59DDAF260BD88800177333 /* Icon-72@2x.png */,
-				CE59DDAD260BD88800177333 /* Icon-76.png */,
-				CE59DDA3260BD88800177333 /* Icon-76@2x.png */,
-				CE59DDA8260BD88800177333 /* Icon-76@3x.png */,
-				CE59DDB2260BD88900177333 /* Icon-iPadPro@2x.png */,
-				CE59DDA2260BD88800177333 /* Icon-Small-50.png */,
-				CE59DDAB260BD88800177333 /* Icon-Small-50@2x.png */,
-				CE59DDA9260BD88800177333 /* Icon-Small.png */,
-				CE59DDB3260BD88900177333 /* Icon-Small@2x.png */,
-				CE59DDB1260BD88900177333 /* Icon-Small@3x.png */,
-				CE59DDA1260BD88800177333 /* Icon-Spotlight-40.png */,
-				CE59DDAC260BD88800177333 /* Icon-Spotlight-40@2x.png */,
-				CE59DDA7260BD88800177333 /* Icon-Spotlight-40@3x.png */,
-				CE59DDB0260BD88800177333 /* Icon.png */,
-				CE59DDA5260BD88800177333 /* Icon@2x.png */,
-			);
-			path = Images;
-			sourceTree = "<group>";
-		};
 		CE9C1FCC260BE867003E26BA /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,7 +149,6 @@
 		D2DA948E2406B8FE00468CC7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				CE59DDC8260BD88F00177333 /* Images */,
 				D2DA947C2406B7E100468CC7 /* Assets.xcassets */,
 				D2DA94952406B98500468CC7 /* DateFormatter+.swift */,
 				D2DA94812406B7E100468CC7 /* LaunchScreen.storyboard */,
@@ -298,31 +224,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE59DDBB260BD88900177333 /* Icon-76@3x.png in Resources */,
-				CE59DDC0260BD88900177333 /* Icon-76.png in Resources */,
-				CE59DDCD260BD96900177333 /* Chat App 167.png in Resources */,
-				CE59DDC2260BD88900177333 /* Icon-72@2x.png in Resources */,
-				CE59DDCE260BD96900177333 /* Chat App 20.png in Resources */,
-				CE59DDBF260BD88900177333 /* Icon-Spotlight-40@2x.png in Resources */,
 				D2DA94832406B7E100468CC7 /* LaunchScreen.storyboard in Resources */,
-				CE59DDBE260BD88900177333 /* Icon-Small-50@2x.png in Resources */,
-				CE59DDBA260BD88900177333 /* Icon-Spotlight-40@3x.png in Resources */,
-				CE59DDB8260BD88900177333 /* Icon@2x.png in Resources */,
-				CE59DDB9260BD88900177333 /* Icon-72.png in Resources */,
-				CE59DDB4260BD88900177333 /* Icon-Spotlight-40.png in Resources */,
-				CE59DDC3260BD88900177333 /* Icon.png in Resources */,
-				CE59DDC5260BD88900177333 /* Icon-iPadPro@2x.png in Resources */,
-				CE59DDB5260BD88900177333 /* Icon-Small-50.png in Resources */,
-				CE59DDBD260BD88900177333 /* Icon-60.png in Resources */,
-				CE59DDB7260BD88900177333 /* Icon-60@2x.png in Resources */,
-				CE59DDBC260BD88900177333 /* Icon-Small.png in Resources */,
 				D2DA94802406B7E100468CC7 /* Preview Assets.xcassets in Resources */,
-				CE59DDB6260BD88900177333 /* Icon-76@2x.png in Resources */,
-				CE59DDC1260BD88900177333 /* Icon-60@3x.png in Resources */,
-				CE59DDC4260BD88900177333 /* Icon-Small@3x.png in Resources */,
-				CE59DDCC260BD96900177333 /* Chat App 1024.png in Resources */,
 				D2DA947D2406B7E100468CC7 /* Assets.xcassets in Resources */,
-				CE59DDC6260BD88900177333 /* Icon-Small@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

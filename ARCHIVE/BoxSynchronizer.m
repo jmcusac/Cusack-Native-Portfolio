@@ -26,6 +26,7 @@
     return synchronizer;
 }
 
+//not recommended
 - (NSMutableDictionary *) getDictionaryOnMainThread {
     
     NSMutableDictionary *returnDictionary = [(AppDelegate *) [UIApplication sharedApplication].delegate surveyDataDictionary];

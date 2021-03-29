@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 struct TranslationService {
-    private let apiKey = ""
+    private let apiKey = "AIzaSyDadhQvQJsezb0Jj8LkaA6NPHvZ6b3guuY"
     
     func publisher(for message: Message, to languageCode: String) -> AnyPublisher<Data, URLError> {
         URLSession.shared.dataTaskPublisher(for: url(for: message, languageCode: languageCode))
@@ -22,7 +22,7 @@ struct TranslationService {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "translate.google.com"
-        components.path = ""//api key
+        components.path = "AIzaSyDadhQvQJsezb0Jj8LkaA6NPHvZ6b3guuY"
         components.setQueryItems(with: ["key": apiKey, "text": message.value, "lang": languageCode])
         return components.url!
     }

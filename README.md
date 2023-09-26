@@ -1,6 +1,6 @@
-# CusackPortfolio
+# Cusack Portfolio
 
-### Cusack Portfolio project to show a few coding styles
+### Portfolio proof of concept project to show modern coding best practices
 
 Swift 5 backend with a Combine and SwiftUI technology stack. Communication app to fully integrate Firebase for database testing.
 
